@@ -1,0 +1,6 @@
+# Core agent runtime
+python-dotenv
+
+# Optional (likely needed soon)
+pydantic
+aiohttp
