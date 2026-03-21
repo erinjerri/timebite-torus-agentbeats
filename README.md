@@ -240,7 +240,13 @@ These benchmarks allow TimeBite agents to be tested across:
 • structured environment simulations  
 • multi-step planning scenarios
 
-The project development timeline is tracked in: docs/to-do-list.md
+The project development timeline is tracked in: docs/to-do-list.md 
+
+# Other Notes: 
+The system separates planning (Green Agent) from execution (Purple Agent).
+Inference is handled through a provider-agnostic LLM adapter that currently
+routes requests to Nebius-hosted models. Telemetry logs allow agent runs
+to be replayed and evaluated using AgentBeats, τ²-Bench, and OpenEnv.
 
 Key milestone:
 

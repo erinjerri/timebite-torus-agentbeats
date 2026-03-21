@@ -44,11 +44,13 @@ Verify fallback adapter | ⬜ Pending | `services/agents/purple/adapters/fallbac
 
 ### LLM Integration
 
+> ⚠️ **REMINDER — Add Nebius last:** Complete `services/llm/llm_client.py` and Purple integration first. Nebius is the final step — plug it in only after the agent pipeline, telemetry, and LLM adapter interface are in place.
+
 Task | Status | Notes
 ---|---|---
 Create `.env` configuration | ⬜ Pending | add Nebius API key
 Implement LLM client adapter | ⬜ Pending | `services/llm/llm_client.py`
-Integrate Nebius inference endpoint | ⬜ Pending | OpenAI-compatible API
+Integrate Nebius inference endpoint | ⬜ Pending | OpenAI-compatible API (add last)
 Add token limits + timeout controls | ⬜ Pending | prevent runaway requests
 Add daily spend guardrail | ⬜ Pending | `NEBIUS_DAILY_BUDGET_USD`
 
