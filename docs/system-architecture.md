@@ -4,63 +4,95 @@ config:
 ---
 flowchart TB
 
-%% ========== Client ==========
+%% ================= CLIENT =================
 subgraph Client["visionOS / iOS Client"]
-    User(("User"))
-    SpeechApple["Speech Recognition<br/>Speech.framework"]
-    Vision["Vision Input<br/>VisionKit/CoreML"]
-    TaskSchema["TaskSchema<br/>Unified Intent"]
+User(("User"))
+
+SpeechApple["Speech Input<br/>Speech.framework"]
+VisionInput["Vision Input<br/>VisionKit / CoreML"]
+
+TaskSchema["Task Schema<br/>Unified Intent Representation"]
 end
 
 User --> SpeechApple --> TaskSchema
-User --> Vision --> TaskSchema
+User --> VisionInput --> TaskSchema
 
-%% ========== Reasoning ==========
-subgraph AppleFM["Apple Foundation Models"]
-    FM["LLM Reasoning<br/>+ Function Calling"]
+%% ================= AGENT LAYER =================
+subgraph Agents["Agent Layer"]
+GreenAgent["Green Agent<br/>Planner"]
+
+PurpleAgent["Purple Agent<br/>Computer-Use Executor"]
 end
 
-TaskSchema --> FM
+TaskSchema --> GreenAgent
+GreenAgent --> PurpleAgent
 
-%% ========== MCP ==========
-subgraph MCPServer["MCP Server"]
-    Registry["Tool Registry"]
-    Validator["Schema Validation"]
-    Router["Execution Router"]
-    Hooks["Telemetry Hooks"]
+%% ================= LLM ADAPTER =================
+subgraph LLM["LLM Adapter Layer"]
+LLMClient["LLM Client Adapter<br/>services/llm/llm_client.py"]
+
+Router["Model Router<br/>cheap vs strong model"]
 end
 
-FM --> Registry
-Registry --> Validator
-Validator --> Router
-Router --> Hooks
+PurpleAgent --> LLMClient
+LLMClient --> Router
 
-%% ========== Tools ==========
-subgraph Tools["Tool Targets"]
-    Swift["On-device Swift Tools"]
-    API["FastAPI Backend"]
+%% ================= INFERENCE =================
+subgraph Nebius["Nebius Inference API"]
+NebiusModels["Hosted Models<br/>Llama / OpenAI-compatible"]
 end
 
-Router --> Swift
-Router --> API
+Router --> NebiusModels
 
-%% ========== Telemetry ==========
-subgraph Telemetry["Lambda.ai"]
-    Store[("JSON Traces<br/>Scores + Trajectories")]
+%% ================= TOOL EXECUTION =================
+subgraph Tools["Execution Layer"]
+ActionRegistry["Action Registry<br/>Agent Tools"]
+
+SwiftTools["On-device Swift Tools"]
+
+Backend["Python Backend / APIs"]
 end
 
-Hooks --> Store
+PurpleAgent --> ActionRegistry
+ActionRegistry --> SwiftTools
+ActionRegistry --> Backend
 
-%% ========== Agents (Conceptual) ==========
-subgraph Agents["AgentBeats Agents (Logical Roles)"]
-    Purple["Purple Agent<br/>Solver"]
-    Green["Green Agent<br/>Judge"]
-    Controller["AgentBeats Controller / SDK"]
+%% ================= STATE =================
+subgraph AppState["Application State"]
+Torus["Torus Visualization<br/>Time Allocation State"]
 end
 
-%% --- Observational / Control Links ---
-Purple -.observes.-> FM
-Purple -.invokes tools via.-> MCPServer
-Green -.evaluates traces.-> Store
-Controller -.configures.-> Purple
-Controller -.configures.-> Green
+SwiftTools --> Torus
+Backend --> Torus
+
+%% ================= TELEMETRY =================
+subgraph Telemetry["Telemetry + Logging"]
+Logger["Telemetry Logger"]
+
+Store[("JSONL Telemetry Runs")]
+end
+
+PurpleAgent --> Logger
+Logger --> Store
+
+%% ================= EVALUATION =================
+subgraph Evaluation["Benchmark Evaluation"]
+AgentBeats["AgentBeats Computer-Use"]
+
+TauBench["τ²-Bench (Sierra)"]
+
+OpenEnv["OpenEnv Benchmark"]
+end
+
+Store --> AgentBeats
+Store --> TauBench
+Store --> OpenEnv
+
+%% ================= COMPUTE =================
+subgraph Compute["Compute Infrastructure"]
+Lambda["Lambda Labs Compute"]
+end
+
+AgentBeats --> Lambda
+TauBench --> Lambda
+OpenEnv --> Lambda
