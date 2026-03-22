@@ -17,7 +17,12 @@ async def main():
             "title": "Write hackathon demo"
         }
     }
-
+    task = {
+    "action": "start_timer",
+    "params": {
+        "title": "Write hackathon demo"
+    }
+}
     result = await agent.run_task(task)
 
     print("[Result]")

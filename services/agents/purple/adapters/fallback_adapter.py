@@ -3,7 +3,7 @@
 from services.agents.purple.actions.action_registry import ActionRegistry
 from services.agents.purple.actions.create_task_action import create_task
 from services.agents.purple.actions.update_visualization_action import update_visualization
-
+from services.agents.purple.actions.start_timer_action import start_timer
 
 class FallbackAdapter:
     """
@@ -18,7 +18,8 @@ class FallbackAdapter:
         # register available actions
         self.registry.register("create_task", create_task)
         self.registry.register("update_visualization", update_visualization)
-
+        self.registry.register("start_timer", start_timer)
+    
     async def run_action(self, action, params):
         print(f"[Adapter] Running action: {action}")
         return self.registry.execute(action, params)

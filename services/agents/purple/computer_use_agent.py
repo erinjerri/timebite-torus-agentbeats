@@ -1,6 +1,7 @@
 # agents/purple/computer_use_agent.py
 
 from typing import Dict, Any
+from services.telemetry import log_event
 
 class ComputerUseAgent:
     """
@@ -20,6 +21,12 @@ class ComputerUseAgent:
         print(f"[PurpleAgent] Executing action: {action}")
 
         result = await self.adapter.run_action(action, params)
+
+        log_event({
+            "action": action,
+            "params": params,
+            "result": result
+        })
 
         return {
             "action": action,
