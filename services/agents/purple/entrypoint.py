@@ -1,9 +1,9 @@
-# agents/purple/entrypoint.py
+# services/agents/purple/entrypoint.py
 
 import asyncio
 
-from agents.purple.computer_use_agent import ComputerUseAgent
-from agents.purple.adapters.fallback_adapter import FallbackAdapter
+from services.agents.purple.computer_use_agent import ComputerUseAgent
+from services.agents.purple.adapters.fallback_adapter import FallbackAdapter
 
 
 async def main():
