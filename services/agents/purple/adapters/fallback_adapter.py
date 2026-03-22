@@ -1,4 +1,7 @@
 # agents/purple/adapters/fallback_adapter.py
+from services.agents.purple.actions.action_registry import ActionRegistry
+from services.agents.purple.actions.create_task_action import create_talk
+from services.agents.purple.actions.update_visualization_action import update_visualization
 
 class FallbackAdapter:
     """
@@ -6,21 +9,14 @@ class FallbackAdapter:
     Used until OpenClaw or real automation is integrated.
     """
 
+    def __init__(self):
+
+        self.registry = ActionRegistry()
+
+        # register available actions
+        self.registry.register("create_task", create_task)
+        self.registry.register("update_visualization", update_visualization)
+    
     async def run_action(self, action, params):
         print(f"[Adapter] Running action: {action}")
-
-        if action == "create_task":
-            return {
-                "status": "ok",
-                "message": f"Task created: {params.get('title')}"
-            }
-
-        if action == "update_visualization":
-            return {
-                "status": "ok",
-                "message": "Torus visualization updated"
-            }
-
-        return {
-            "status": "unknown_action"
-        }
+        return self.registry.execute(action, params)
