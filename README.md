@@ -228,6 +228,7 @@ timebite-torus-agentbeats
 └── notebooks
     ├── evaluation_analysis.ipynb
     └── telemetry_visualization.ipynb
+```text
 
 # System Architecture
 Detailed system diagrams and architecture explanations are available in: docs/system-architecture.md
