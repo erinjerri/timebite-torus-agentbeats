@@ -1,276 +1,321 @@
-# TimeBite Torus — AgentBeats General Track Submission
+# TimeBite Platform
 
-A beta prototype of the **TimeBite** app, part of the **Create Your Reality Agent (CYRA)** project.
+TimeBite is a **cycle-based time system** for modeling how time is actually spent across life categories — not just planned.
 
-TimeBite Torus is an experimental system for evaluating **AI agents performing structured work tasks inside an interactive application environment**.
+It connects:
 
-The project was originally developed for the **AgentBeats Computer-Use track**, which evaluates how agents plan and execute actions within real software environments. The system is now being expanded and submitted to the **AgentBeats General Track (May 2025)**.
+- planning (HTML / Notion-style systems)
+- execution (Cycle Matrix)
+- visualization (Cycles Dashboard)
+- feedback (score, insights, agents)
 
-In TimeBite, the **application itself becomes the evaluation environment**.
+Built across:
 
-Rather than evaluating agents on abstract benchmarks alone, agents interact directly with a productivity interface where their actions change the state of the system.
-
----
-
-# Abstract
-
-Most productivity tools represent work using lists or calendars. These interfaces provide limited insight into how time is actually distributed across different types of work.
-
-TimeBite introduces a **torus-based visualization** where each ring represents a category of work:
-
-• Engineering  
-• Writing  
-• Research  
-• Communication  
-
-At the beginning of a work cycle, every ring begins fully shaded, representing the available time capacity for that category.
-
-When work begins:
-
-Agent triggers task
-↓
-Timer starts
-↓
-Category capacity decreases
-↓
-Torus visualization updates
-
-As the timer progresses, the ring gradually empties, representing the remaining time available for that category.
-
-This creates a **dynamic environment for evaluating agent behavior**.
-
-Instead of measuring only completed tasks, TimeBite explores a different question:
-
-**How effectively can an AI agent allocate working time across categories of effort?**
-
-This allows the system to function both as a **productivity tool** and as an **experimental environment for evaluating computer-use agents operating inside real applications**.
+- **iOS** — primary product surface (TestFlight → App Store)
+- **visionOS** — spatial computing (torus, 3D cycles)
+- **macOS** — debugging + power-user interface (future)
 
 ---
 
-# Agent Architecture
+## TL;DR
 
-TimeBite uses a **two-agent architecture**.
-
-### Green Agent — Planner
-
-The Green Agent interprets user intent and generates structured task plans.
-
-Responsibilities:
-
-• understanding user input  
-• generating task plans  
-• structuring execution context  
+- **What:** A system that shows how your time is actually spent  
+- **Core:** Planner → Cycle Matrix → Cycles Dashboard → Feedback  
+- **Agent:** Constrained assistant (tight RAG, not open chat)  
+- **Status:** Active development + research monorepo  
 
 ---
 
-### Purple Agent — Executor
+## Core System
 
-The Purple Agent executes actions inside the application environment.
+### 1. Cycle Matrix (Backend)
 
-Responsibilities:
+The **source of truth** for time allocation.
 
-• performing actions inside the system  
-• triggering timers and updates  
-• interacting with the application state  
+Structure:
 
----
+- rows → time segments  
+- columns → categories  
+- values → time spent  
 
-Together they form an execution loop:
+This powers:
 
-User Input
-↓
-Green Agent (planning)
-↓
-Purple Agent (execution)
-↓
-Application state changes
-↓
-Torus visualization updates
-
-The torus visualization provides a real-time representation of how agent decisions affect the allocation of working time.
+- dashboard state
+- scoring
+- agent decisions
+- telemetry
 
 ---
 
-# System Architecture
+### 2. TimeBite Cycles (UI System)
 
-The system separates:
+User-facing representation of time distribution.
 
-• interface  
-• planning  
-• execution  
-• inference  
-• telemetry  
-• evaluation
+Includes:
 
-Architecture overview:
-User Interaction
-↓
-TimeBite UI (visionOS / iOS)
-↓
-Green Agent — Planner
-↓
-Purple Agent — Executor
-↓
-LLM Client Adapter
-↓
-Nebius Inference API
-↓
-Agent Actions
-↓
-Application State + Torus Visualization
-↓
-Telemetry Logs
-↓
-Evaluation Benchmarks
-
-These benchmarks allow TimeBite agents to be tested across:
-
-• computer-use tasks  
-• structured environment simulations  
-• multi-step planning scenarios
+- category allocation (bars)
+- contribution grid (GitHub-style history)
+- cycle score + imbalance feedback
+- reality check (actual vs intended)
 
 ---
 
-# Repository Structure - North Star (ideal)
-timebite-torus-agentbeats
-│
-├── README.md
-├── LICENSE
-├── .gitignore
-├── requirements.txt
-├── .env.example
-│
-├── apps
-│   └── ios
-│       └── TimeBite
-│           ├── TimeBiteApp.swift
-│           ├── ContentView.swift
-│           ├── TorusVisualization
-│           │   ├── TorusRenderer.swift
-│           │   └── TorusStateManager.swift
-│           └── Agents
-│               └── AgentTriggerBridge.swift
-│
-├── services
-│   │
-│   ├── agents
-│   │   │
-│   │   ├── green
-│   │   │   ├── planner.py
-│   │   │   ├── memory.py
-│   │   │   └── context_builder.py
-│   │   │
-│   │   └── purple
-│   │       ├── computer_use_agent.py
-│   │       ├── entrypoint.py
-│   │       │
-│   │       ├── adapters
-│   │       │   ├── fallback_adapter.py
-│   │       │   └── llm_adapter.py
-│   │       │
-│   │       ├── actions
-│   │       │   ├── action_registry.py
-│   │       │   ├── timer_action.py
-│   │       │   └── navigation_action.py
-│   │       │
-│   │       └── policies
-│   │           └── execution_guardrails.py
-│   │
-│   ├── llm
-│   │   ├── llm_client.py
-│   │   ├── model_router.py
-│   │   └── prompt_templates.py
-│   │
-│   ├── telemetry
-│   │   ├── telemetry_logger.py
-│   │   ├── cost_tracking.py
-│   │   └── run_schema.py
-│   │
-│   └── config
-│       ├── config.py
-│       └── environment.py
-│
-├── evaluation
-│   │
-│   ├── computer_use
-│   │   └── computer_use_runner.py
-│   │
-│   ├── tau_bench
-│   │   └── tau_bench_runner.py
-│   │
-│   ├── openenv
-│   │   └── openenv_runner.py
-│   │
-│   └── replay
-│       └── replay_telemetry_runs.py
-│
-├── data
-│   │
-│   ├── telemetry_runs
-│   │   └── *.jsonl
-│   │
-│   └── benchmark_results
-│       ├── tau_bench
-│       └── openenv
-│
-├── scripts
-│   ├── run_agent_local.py
-│   ├── run_tau_bench.py
-│   └── run_openenv.py
-│
-├── docs
-│   │
-│   ├── system-architecture.md
-│   ├── repo-tree.md
-│   ├── benchmarks.md
-│   └── to-do-list.md
-│
-└── notebooks
-    ├── evaluation_analysis.ipynb
-    └── telemetry_visualization.ipynb
+### 3. Cycle Planner Engine (NEW)
+
+Bridges long-term planning → execution.
+
+Inputs:
+
+- HTML planners (Claude-generated)
+- Notion-style structured plans (future)
+
+Purpose:
+
+- convert plans into real system state
+- connect planning ↔ execution
+- enable agent-aware scheduling
+
+---
+
+### 4. Constrained Assistant (Tight RAG)
+
+The assistant is **not a chatbot**.
+
+It can only:
+
+- execute allowed UI actions
+- retrieve documentation
+
+It cannot:
+
+- hallucinate
+- generate arbitrary plans
+- mutate system state freely
+
+---
+
+## Cycles Dashboard (UI Concept)
+
+TimeBite surfaces time as a **structured system**, not just tasks.
+
+---
+
+### Daily Cycles
+
 ```text
+[ Today ]
 
-# System Architecture
-Detailed system diagrams and architecture explanations are available in: docs/system-architecture.md
+Engineering — 3h 20m ███████░░
+Writing     — 1h 45m ████░░░░░
+Health      — 0h 50m ██░░░░░░░
+Admin       — 2h 10m █████░░░░
+Personal    — 0h 30m █░░░░░░░░
 
-# Development Timeline
+[ Last 30 Days ]
 
-These benchmarks allow TimeBite agents to be tested across:
+██ ░░ ██ ██ ░░ ██
+██ ██ ██ ░░ ░░ ██
+░░ ██ ██ ██ ░░ ░░
+██ ░░ ░░ ██ ██ ██
 
-• computer-use tasks  
-• structured environment simulations  
-• multi-step planning scenarios
+Today Score: 68 / 100
 
-The project development timeline is tracked in: docs/to-do-list.md 
+Balance: 70  
+Consistency: 65  
+Intent vs Actual: 72
+```
 
-# Other Notes: 
-The system separates planning (Green Agent) from execution (Purple Agent).
-Inference is handled through a provider-agnostic LLM adapter that currently
-routes requests to Nebius-hosted models. Telemetry logs allow agent runs
-to be replayed and evaluated using AgentBeats, τ²-Bench, and OpenEnv.
-
-Key milestone:
-
-**Mar 24 — TestFlight build for Apple App Review**
-
----
-
-# Acknowledgments
-
-AgentBeats Hackathon organizers for the evaluation framework  
-Apple visionOS team for the platform and developer tools  
-OpenAI for research on agent evaluation architectures  
-Nebius AI for inference infrastructure  
-Lambda Labs for compute resources  
+**Reality check:** “You spent 58% of your time on Engineering. Health was underutilized.”
 
 ---
 
-# Citation
+### Architecture overview
+
+```
+Planner (HTML / Notion)
+        ↓
+Planner Engine (backend)
+        ↓
+Cycle Matrix (system state)
+        ↓
+Apps (iOS / visionOS / macOS)
+        ↓
+User actions + agent actions
+        ↓
+Cycle updates + telemetry
+        ↓
+Cycles Dashboard (UI feedback)
+```
+
+---
+
+## This repository
+
+This repo (`timebite-torus-agentbeats`) holds **docs, specs, schemas, research**, and AgentBeats-related work (Green / Purple agents). The tree below is the **target** monorepo layout for `timebite-platform/`.
+
+---
+
+## Target platform structure (`timebite-platform/`)
+
+```text
+timebite-platform/
+│
+├── apps/
+│
+│   ├── ios/
+│   │   └── timebite-ios/
+│   │       ├── App/
+│   │       │   ├── TimeBiteApp.swift
+│   │       │   ├── RootView.swift
+│   │       │   ├── AppState.swift
+│   │       │   └── Navigation/
+│   │       │       ├── TabRouter.swift
+│   │       │       └── RouteDefinitions.swift
+│   │       │
+│   │       ├── Features/
+│   │       │   ├── cycles/
+│   │       │   │   ├── Views/
+│   │       │   │   │   ├── CyclesDashboardView.swift
+│   │       │   │   │   ├── CycleRowView.swift
+│   │       │   │   │   ├── CycleBarView.swift
+│   │       │   │   │   ├── CycleScoreCard.swift
+│   │       │   │   │   ├── RealityCheckView.swift
+│   │       │   │   │   └── DailySummaryView.swift
+│   │       │   │   ├── ViewModels/
+│   │       │   │   │   ├── CyclesViewModel.swift
+│   │       │   │   │   └── CycleComputation.swift
+│   │       │   │   ├── Models/
+│   │       │   │   │   ├── Cycle.swift
+│   │       │   │   │   ├── Category.swift
+│   │       │   │   │   └── CycleSnapshot.swift
+│   │       │   │   └── Components/
+│   │       │   │       ├── ProgressBar.swift
+│   │       │   │       └── PercentageLabel.swift
+│   │       │   │
+│   │       │   ├── tasks/
+│   │       │   ├── planner/
+│   │       │   ├── insights/
+│   │       │   └── assistant/
+│   │       │
+│   │       ├── Services/
+│   │       │   ├── API/
+│   │       │   ├── Storage/
+│   │       │   ├── Assistant/
+│   │       │   └── Integrations/
+│   │       │
+│   │       └── Shared/
+│
+│   ├── visionos/
+│   │   └── timebite-visionos/
+│   │       ├── App/
+│   │       │   ├── TimeBiteVisionApp.swift
+│   │       │   └── SpatialRootView.swift
+│   │       │
+│   │       ├── Features/
+│   │       │   ├── torus/
+│   │       │   │   ├── Views/
+│   │       │   │   │   ├── TorusView.swift
+│   │       │   │   │   ├── Ring3DView.swift
+│   │       │   │   │   └── SpatialCyclesView.swift
+│   │       │   │   ├── Models/
+│   │       │   │   └── ViewModels/
+│   │       │   │
+│   │       │   └── gestures/
+│   │       │       ├── HandTrackingManager.swift
+│   │       │       └── GestureRouter.swift
+│   │       │
+│   │       └── Shared/
+│
+│   ├── macos/
+│   │   └── timebite-macos/
+│   │       ├── App/
+│   │       │   ├── TimeBiteMacApp.swift
+│   │       │   └── DesktopRootView.swift
+│   │       │
+│   │       ├── Features/
+│   │       │   ├── cycles/
+│   │       │   ├── planner/
+│   │       │   ├── insights/
+│   │       │   └── debug/
+│   │       │       ├── TelemetryView.swift
+│   │       │       └── LogsViewer.swift
+│   │       │
+│   │       └── Services/
+│
+│   └── web/
+│       └── timebite-web/
+│
+├── backend/
+│   ├── api/
+│   │   └── main.py
+│   │
+│   ├── services/
+│   │   ├── cycles/
+│   │   │   ├── cycle_matrix.py
+│   │   │   ├── cycle_engine.py
+│   │   │   └── scoring.py
+│   │   │
+│   │   ├── planner/
+│   │   │   ├── parser.py
+│   │   │   ├── schema.py
+│   │   │   ├── mapper.py
+│   │   │   └── importer.py
+│   │   │
+│   │   ├── agents/
+│   │   │   ├── green_agent/
+│   │   │   ├── purple_agent/
+│   │   │   └── shared/
+│   │   │
+│   │   ├── assistant/
+│   │   │   ├── orchestrator.py
+│   │   │   ├── intent_classifier.py
+│   │   │   ├── ui_action_whitelist.py
+│   │   │   └── documentation_router.py
+│   │   │
+│   │   ├── retrieval/
+│   │   │   ├── ingest_docs.py
+│   │   │   ├── chunking.py
+│   │   │   ├── embeddings.py
+│   │   │   ├── vector_store.py
+│   │   │   └── retriever.py
+│   │   │
+│   │   └── telemetry/
+│   │       ├── logger.py
+│   │       └── runs.jsonl
+│   │
+│   └── data/
+│
+├── shared/
+├── docs/
+├── specs/
+├── research/
+└── scripts/
+```
+
+---
+
+## Further documentation
+
+- [docs/system-architecture.md](docs/system-architecture.md) — system diagrams and architecture notes  
+- [docs/to-do-list.md](docs/to-do-list.md) — development timeline  
+
+---
+
+## Acknowledgments
+
+AgentBeats Hackathon organizers · Apple visionOS team · Nebius AI for inference infrastructure · Lambda Labs for compute resources  
+
+---
+
+## Citation
 
 If you use TimeBite in research, please cite:
+
+```bibtex
 @software{timebite_torus_2025,
-title={TimeBite Torus: A Computer-Use Agent Evaluation Environment},
-author={Erin Pangilinan},
-year={2025},
-url={https://github.com/erinjerri/timebite-torus-agentbeats}
+  title={TimeBite Torus: A Computer-Use Agent Evaluation Environment},
+  author={Erin Pangilinan},
+  year={2025},
+  url={https://github.com/erinjerri/timebite-torus-agentbeats}
 }
+```
