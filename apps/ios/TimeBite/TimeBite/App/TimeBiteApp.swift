@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftData
 
 @main
 struct TimeBiteApp: App {
@@ -15,6 +14,7 @@ struct TimeBiteApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
+                .environmentObject(appState)
         }
     }
 }

@@ -12,6 +12,7 @@ struct RootView: View {
     var body: some View {
            VStack {
                Button("Start Engineering") {
+                print("BUTTON PRESSED")
                    appState.engine.start(category: "engineering")
                }
 

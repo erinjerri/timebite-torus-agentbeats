@@ -35,6 +35,9 @@ class TimeBiteEngine: ObservableObject {
         guard let category = activeCategory else { return }
         guard let remaining = categories[category] else { return }
         
+        let newValue = max(remaining, -1, 0)
         categories[category] = max(remaining - 1, 0)
+        
+        print ("TICK:", category, newValue)
     }
 }
