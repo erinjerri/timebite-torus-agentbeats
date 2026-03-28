@@ -157,139 +157,141 @@ This repo (`timebite-torus-agentbeats`) holds **docs, specs, schemas, research**
 
 ## Target platform structure (`timebite-platform/`)
 
-```text
+Top-level layout (GitHub-friendly: each block is a short tree so lines don’t wrap oddly).
+
+```
 timebite-platform/
-│
 ├── apps/
-│
-│   ├── ios/
-│   │   └── timebite-ios/
-│   │       ├── App/
-│   │       │   ├── TimeBiteApp.swift
-│   │       │   ├── RootView.swift
-│   │       │   ├── AppState.swift
-│   │       │   └── Navigation/
-│   │       │       ├── TabRouter.swift
-│   │       │       └── RouteDefinitions.swift
-│   │       │
-│   │       ├── Features/
-│   │       │   ├── cycles/
-│   │       │   │   ├── Views/
-│   │       │   │   │   ├── CyclesDashboardView.swift
-│   │       │   │   │   ├── CycleRowView.swift
-│   │       │   │   │   ├── CycleBarView.swift
-│   │       │   │   │   ├── CycleScoreCard.swift
-│   │       │   │   │   ├── RealityCheckView.swift
-│   │       │   │   │   └── DailySummaryView.swift
-│   │       │   │   ├── ViewModels/
-│   │       │   │   │   ├── CyclesViewModel.swift
-│   │       │   │   │   └── CycleComputation.swift
-│   │       │   │   ├── Models/
-│   │       │   │   │   ├── Cycle.swift
-│   │       │   │   │   ├── Category.swift
-│   │       │   │   │   └── CycleSnapshot.swift
-│   │       │   │   └── Components/
-│   │       │   │       ├── ProgressBar.swift
-│   │       │   │       └── PercentageLabel.swift
-│   │       │   │
-│   │       │   ├── tasks/
-│   │       │   ├── planner/
-│   │       │   ├── insights/
-│   │       │   └── assistant/
-│   │       │
-│   │       ├── Services/
-│   │       │   ├── API/
-│   │       │   ├── Storage/
-│   │       │   ├── Assistant/
-│   │       │   └── Integrations/
-│   │       │
-│   │       └── Shared/
-│
-│   ├── visionos/
-│   │   └── timebite-visionos/
-│   │       ├── App/
-│   │       │   ├── TimeBiteVisionApp.swift
-│   │       │   └── SpatialRootView.swift
-│   │       │
-│   │       ├── Features/
-│   │       │   ├── torus/
-│   │       │   │   ├── Views/
-│   │       │   │   │   ├── TorusView.swift
-│   │       │   │   │   ├── Ring3DView.swift
-│   │       │   │   │   └── SpatialCyclesView.swift
-│   │       │   │   ├── Models/
-│   │       │   │   └── ViewModels/
-│   │       │   │
-│   │       │   └── gestures/
-│   │       │       ├── HandTrackingManager.swift
-│   │       │       └── GestureRouter.swift
-│   │       │
-│   │       └── Shared/
-│
-│   ├── macos/
-│   │   └── timebite-macos/
-│   │       ├── App/
-│   │       │   ├── TimeBiteMacApp.swift
-│   │       │   └── DesktopRootView.swift
-│   │       │
-│   │       ├── Features/
-│   │       │   ├── cycles/
-│   │       │   ├── planner/
-│   │       │   ├── insights/
-│   │       │   └── debug/
-│   │       │       ├── TelemetryView.swift
-│   │       │       └── LogsViewer.swift
-│   │       │
-│   │       └── Services/
-│
-│   └── web/
-│       └── timebite-web/
-│
 ├── backend/
-│   ├── api/
-│   │   └── main.py
-│   │
-│   ├── services/
-│   │   ├── cycles/
-│   │   │   ├── cycle_matrix.py
-│   │   │   ├── cycle_engine.py
-│   │   │   └── scoring.py
-│   │   │
-│   │   ├── planner/
-│   │   │   ├── parser.py
-│   │   │   ├── schema.py
-│   │   │   ├── mapper.py
-│   │   │   └── importer.py
-│   │   │
-│   │   ├── agents/
-│   │   │   ├── green_agent/
-│   │   │   ├── purple_agent/
-│   │   │   └── shared/
-│   │   │
-│   │   ├── assistant/
-│   │   │   ├── orchestrator.py
-│   │   │   ├── intent_classifier.py
-│   │   │   ├── ui_action_whitelist.py
-│   │   │   └── documentation_router.py
-│   │   │
-│   │   ├── retrieval/
-│   │   │   ├── ingest_docs.py
-│   │   │   ├── chunking.py
-│   │   │   ├── embeddings.py
-│   │   │   ├── vector_store.py
-│   │   │   └── retriever.py
-│   │   │
-│   │   └── telemetry/
-│   │       ├── logger.py
-│   │       └── runs.jsonl
-│   │
-│   └── data/
-│
 ├── shared/
 ├── docs/
 ├── specs/
 ├── research/
 └── scripts/
+```
+
+### `apps/ios/timebite-ios/`
+
+```
+timebite-ios/
+├── App/
+│   ├── TimeBiteApp.swift
+│   ├── RootView.swift
+│   ├── AppState.swift
+│   └── Navigation/
+│       ├── TabRouter.swift
+│       └── RouteDefinitions.swift
+├── Features/
+│   ├── cycles/
+│   │   ├── Views/
+│   │   │   ├── CyclesDashboardView.swift
+│   │   │   ├── CycleRowView.swift
+│   │   │   ├── CycleBarView.swift
+│   │   │   ├── CycleScoreCard.swift
+│   │   │   ├── RealityCheckView.swift
+│   │   │   └── DailySummaryView.swift
+│   │   ├── ViewModels/
+│   │   │   ├── CyclesViewModel.swift
+│   │   │   └── CycleComputation.swift
+│   │   ├── Models/
+│   │   │   ├── Cycle.swift
+│   │   │   ├── Category.swift
+│   │   │   └── CycleSnapshot.swift
+│   │   └── Components/
+│   │       ├── ProgressBar.swift
+│   │       └── PercentageLabel.swift
+│   ├── tasks/
+│   ├── planner/
+│   ├── insights/
+│   └── assistant/
+├── Services/
+│   ├── API/
+│   ├── Storage/
+│   ├── Assistant/
+│   └── Integrations/
+└── Shared/
+```
+
+### `apps/visionos/timebite-visionos/`
+
+```
+timebite-visionos/
+├── App/
+│   ├── TimeBiteVisionApp.swift
+│   └── SpatialRootView.swift
+├── Features/
+│   ├── torus/
+│   │   ├── Views/
+│   │   │   ├── TorusView.swift
+│   │   │   ├── Ring3DView.swift
+│   │   │   └── SpatialCyclesView.swift
+│   │   ├── Models/
+│   │   └── ViewModels/
+│   └── gestures/
+│       ├── HandTrackingManager.swift
+│       └── GestureRouter.swift
+└── Shared/
+```
+
+### `apps/macos/timebite-macos/`
+
+```
+timebite-macos/
+├── App/
+│   ├── TimeBiteMacApp.swift
+│   └── DesktopRootView.swift
+├── Features/
+│   ├── cycles/
+│   ├── planner/
+│   ├── insights/
+│   └── debug/
+│       ├── TelemetryView.swift
+│       └── LogsViewer.swift
+└── Services/
+```
+
+### `apps/web/timebite-web/`
+
+```
+timebite-web/
+└── (package root)
+```
+
+### `backend/`
+
+```
+backend/
+├── api/
+│   └── main.py
+├── services/
+│   ├── cycles/
+│   │   ├── cycle_matrix.py
+│   │   ├── cycle_engine.py
+│   │   └── scoring.py
+│   ├── planner/
+│   │   ├── parser.py
+│   │   ├── schema.py
+│   │   ├── mapper.py
+│   │   └── importer.py
+│   ├── agents/
+│   │   ├── green_agent/
+│   │   ├── purple_agent/
+│   │   └── shared/
+│   ├── assistant/
+│   │   ├── orchestrator.py
+│   │   ├── intent_classifier.py
+│   │   ├── ui_action_whitelist.py
+│   │   └── documentation_router.py
+│   ├── retrieval/
+│   │   ├── ingest_docs.py
+│   │   ├── chunking.py
+│   │   ├── embeddings.py
+│   │   ├── vector_store.py
+│   │   └── retriever.py
+│   └── telemetry/
+│       ├── logger.py
+│       └── runs.jsonl
+└── data/
 ```
 
 ---

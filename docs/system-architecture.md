@@ -1,7 +1,8 @@
----
-config:
-  layout: dagre
----
+# System architecture
+
+High-level flow for the AgentBeats / TimeBite agent stack. Renders as a diagram on GitHub.
+
+```mermaid
 flowchart TB
 
 %% ================= CLIENT =================
@@ -96,3 +97,4 @@ end
 AgentBeats --> Lambda
 TauBench --> Lambda
 OpenEnv --> Lambda
+```
